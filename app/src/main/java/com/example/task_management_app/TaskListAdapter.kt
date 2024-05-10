@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -28,9 +26,6 @@ class TaskListAdapter(private val viewModel: TaskViewModel, private val context:
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textView1: TextView = itemView.findViewById(R.id.textView1)
         private val btnDelete: Button = itemView.findViewById(R.id.btnDelete)
-
-        private val newTaskActivityRequestCode = 2
-
 
         fun bind(taskName: String?, description: String?, priority: Int, deadline: String, viewModel: TaskViewModel, context: Context) {
             textView1.text = "Task: $taskName\nDescription: $description\nPriority: $priority\nDeadline: $deadline"

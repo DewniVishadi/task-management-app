@@ -18,21 +18,32 @@ class TaskRepository(private val taskDao: TaskDao) {
         return taskDao.getTaskById(taskName)
     }
 
+    fun descriptionSetter(desc: String): String {
+        if (desc.isEmpty() || desc == null) {
+            return "Not Provided."
+        }
+        else return desc
+    }
+
     @WorkerThread
     suspend fun insert(context: Context, TASK_NAME: String? ,DESCRIPTION: String?, PRIORITY: Int?, DEADLINE: String?) {
         try {
-            val task = Task(
-                TASK_NAME ?: "",
-                DESCRIPTION ?: "",
-                PRIORITY ?: 0,
-                DEADLINE ?: ""
-            )
+            val task = DESCRIPTION?.let { descriptionSetter(it) }?.let {
+                Task(
+                    TASK_NAME ?: "",
+                    it,
+                    PRIORITY ?: 0,
+                    DEADLINE ?: ""
+                )
+            }
             val chk = TASK_NAME?.let { getTaskByName(it) }
             println("chk $chk")
             if (chk != null) {
                 Toast.makeText(context, "Task already exists!", Toast.LENGTH_SHORT).show()
             } else {
-                taskDao.insert(task)
+                if (task != null) {
+                    taskDao.insert(task)
+                }
                 Toast.makeText(context, "Task inserted successfully!", Toast.LENGTH_SHORT).show()
             }
 
