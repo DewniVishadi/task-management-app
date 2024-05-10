@@ -37,9 +37,9 @@ class MainActivity : AppCompatActivity() {
         // Add an observer on the LiveData returned by getAlphabetizedWords.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
-        taskViewModel.allTasks.observe(owner = this) { words ->
+        taskViewModel.allTasks.observe(owner = this) { tasks ->
             // Update the cached copy of the words in the adapter.
-            words.let { adapter.submitList(it) }
+            tasks.let { adapter.submitList(it) }
         }
     }
 
@@ -58,13 +58,8 @@ class MainActivity : AppCompatActivity() {
             println("DEADLINE $DEADLINE")
 
             if (PRIORITY != null) {
-                taskViewModel.insert(TASK_NAME, DESCRIPTION, PRIORITY.toInt(), DEADLINE)
+                taskViewModel.insert(applicationContext ,TASK_NAME, DESCRIPTION, PRIORITY.toInt(), DEADLINE)
             }
-            Toast.makeText(
-                applicationContext,
-                "Task Added Successfully !!!",
-                Toast.LENGTH_LONG
-            ).show()
 
         } else {
             Toast.makeText(

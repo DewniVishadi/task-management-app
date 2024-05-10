@@ -13,6 +13,9 @@ interface TaskDao {
     @Query("SELECT * FROM task_table ORDER BY task ASC")
     fun getAlphabetizedTasks(): Flow<List<Task>>
 
+    @Query("SELECT * FROM task_table WHERE task = :task")
+    suspend fun getTaskById(task: String): Task?
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(task: Task)
 

@@ -17,14 +17,14 @@ class TaskListAdapter : ListAdapter<Task, TaskViewHolder>(WORDS_COMPARATOR) {
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val current = getItem(position)
-        holder.bind(current.task)
+        holder.bind(current.task, current.description, current.priority, current.deadline)
     }
 
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val wordItemView: TextView = itemView.findViewById(R.id.textView)
+        private val textView1: TextView = itemView.findViewById(R.id.textView1)
 
-        fun bind(text: String?) {
-            wordItemView.text = text
+        fun bind(taskName: String?, description: String?, priority: Int, deadline: String) {
+            textView1.text = "Task Name: $taskName\nDescription: $description\nPriority $priority\nDeadline $deadline"
         }
 
         companion object {
