@@ -37,31 +37,26 @@ android {
 }
 
 dependencies {
-    val room_version = "2.6.1"
 
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    // To use Kotlin annotation processing tool (kapt)
+    ksp(libs.androidx.room.compiler)
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
-
+    implementation(libs.androidx.room.ktx)
     // optional - RxJava2 support for Room
-    implementation("androidx.room:room-rxjava2:$room_version")
-
+    implementation(libs.androidx.room.rxjava2)
     // optional - RxJava3 support for Room
-    implementation("androidx.room:room-rxjava3:$room_version")
-
+    implementation(libs.androidx.room.rxjava3)
     // optional - Guava support for Room, including Optional and ListenableFuture
-    implementation("androidx.room:room-guava:$room_version")
-
+    implementation(libs.androidx.room.guava)
     // optional - Test helpers
-    testImplementation("androidx.room:room-testing:$room_version")
-
+    testImplementation(libs.androidx.room.testing)
     // optional - Paging 3 Integration
-    implementation("androidx.room:room-paging:$room_version")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
-
+    implementation(libs.androidx.room.paging)
+    implementation (libs.androidx.activity.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
