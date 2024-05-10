@@ -17,12 +17,41 @@ package com.example.task_management_app
 
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.Flow
+import java.util.Calendar
+
 class TaskRepository(private val taskDao: TaskDao) {
 
-    val allWords: Flow<List<Task>> = taskDao.getAlphabetizedWords()
-    @Suppress("RedundantSuspendModifier")
+    private val calendar: Calendar = Calendar.getInstance()
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH) + 1 // Month starts from 0
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+    val allTasks: Flow<List<Task>> = taskDao.getAlphabetizedTasks()
+
     @WorkerThread
-    suspend fun insert(task: Task) {
+    suspend fun insert(TASK_NAME: String? ,DESCRIPTION: String?, PRIORITY: Int?, DEADLINE: String?) {
+        val task = Task(
+            TASK_NAME ?: "",
+            DESCRIPTION ?: "",
+            PRIORITY ?: 0,
+            DEADLINE ?: "$year-$month-$day"
+        )
         taskDao.insert(task)
     }
+
+    @WorkerThread
+    suspend fun delete(task: Task) {
+        taskDao.delete(task)
+    }
+
+    @WorkerThread
+    suspend fun deleteTaskByName(taskName: String) {
+        taskDao.deleteTaskByName(taskName)
+    }
+
+    @WorkerThread
+    suspend fun update(task: Task) {
+        taskDao.update(task)
+    }
 }
+

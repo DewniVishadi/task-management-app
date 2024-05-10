@@ -25,7 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Task::class], version = 1)
+@Database(entities = [Task::class], version = 2)
 abstract class TaskRoomDatabase : RoomDatabase() {
 
     abstract fun taskDao(): TaskDao
@@ -69,10 +69,13 @@ abstract class TaskRoomDatabase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(taskDao: TaskDao) {
-            taskDao.deleteAll()
-            var task = Task("Hello")
+            // Delete all existing tasks if needed
+            // taskDao.deleteAll()
+
+            // Insert new tasks into the database
+            var task = Task("Hello", "Description for Hello task", 1, "2024-05-11")
             taskDao.insert(task)
-            task = Task("World!")
+            task = Task("World!", "Description for World task", 2, "2024-05-12")
             taskDao.insert(task)
         }
     }

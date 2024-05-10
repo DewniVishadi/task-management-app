@@ -10,9 +10,11 @@ import kotlinx.coroutines.launch
 
 class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
-    val allWords: LiveData<List<Task>> = repository.allWords.asLiveData()
-    fun insert(task: Task) = viewModelScope.launch {
-        repository.insert(task)
+    val allTasks: LiveData<List<Task>> = repository.allTasks.asLiveData()
+    fun insert(TASK_NAME: String? ,DESCRIPTION: String?, PRIORITY: Int?, DEADLINE: String?) = viewModelScope.launch {
+        if (TASK_NAME != null) {
+            repository.insert(TASK_NAME, DESCRIPTION, PRIORITY, DEADLINE)
+        }
     }
 }
 

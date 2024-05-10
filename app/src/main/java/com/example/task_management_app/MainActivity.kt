@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2017 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.example.task_management_app
 
 import android.app.Activity
@@ -29,8 +13,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
-    private val newWordActivityRequestCode = 1
-    private val wordViewModel: TaskViewModel by viewModels {
+    private val newTaskActivityRequestCode = 1
+    private val taskViewModel: TaskViewModel by viewModels {
         WordViewModelFactory((application as TasksApplication).repository)
     }
 
@@ -46,14 +30,14 @@ class MainActivity : AppCompatActivity() {
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             val intent = Intent(this@MainActivity, NewTaskActivity::class.java)
-            startActivityForResult(intent, newWordActivityRequestCode)
+            startActivityForResult(intent, newTaskActivityRequestCode)
         }
 
         
         // Add an observer on the LiveData returned by getAlphabetizedWords.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
-        wordViewModel.allWords.observe(owner = this) { words ->
+        taskViewModel.allTasks.observe(owner = this) { words ->
             // Update the cached copy of the words in the adapter.
             words.let { adapter.submitList(it) }
         }
@@ -62,11 +46,26 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
         super.onActivityResult(requestCode, resultCode, intentData)
 
-        if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            intentData?.getStringExtra(NewTaskActivity.EXTRA_REPLY)?.let { reply ->
-                val word = Task(reply)
-                wordViewModel.insert(word)
+        if (requestCode == newTaskActivityRequestCode && resultCode == Activity.RESULT_OK) {
+            val TASK_NAME = intentData?.getStringExtra("TASK_NAME").toString();
+            val DESCRIPTION = intentData?.getStringExtra("DESCRIPTION").toString();
+            val PRIORITY = intentData?.getIntExtra("PRIORITY",0);
+            val DEADLINE = intentData?.getStringExtra("DEADLINE").toString();
+
+            println("TASK_NAME $TASK_NAME")
+            println("DESCRIPTION $DESCRIPTION")
+            println("PRIORITY $PRIORITY")
+            println("DEADLINE $DEADLINE")
+
+            if (PRIORITY != null) {
+                taskViewModel.insert(TASK_NAME, DESCRIPTION, PRIORITY.toInt(), DEADLINE)
             }
+            Toast.makeText(
+                applicationContext,
+                "Task Added Successfully !!!",
+                Toast.LENGTH_LONG
+            ).show()
+
         } else {
             Toast.makeText(
                 applicationContext,
