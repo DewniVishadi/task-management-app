@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private val newTaskActivityRequestCode = 1
     private val taskViewModel: TaskViewModel by viewModels {
-        WordViewModelFactory((application as TasksApplication).repository)
+        TaskViewModelFactory((application as TasksApplication).repository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = TaskListAdapter()
+        val adapter = TaskListAdapter(taskViewModel);
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 

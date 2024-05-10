@@ -2,16 +2,19 @@ package com.example.task_management_app
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.NumberPicker
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 
 class NewTaskActivity : AppCompatActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_item)
@@ -53,9 +56,5 @@ class NewTaskActivity : AppCompatActivity() {
             }
             finish()
         }
-    }
-
-    companion object {
-        const val EXTRA_REPLY = "com.example.android.wordlistsql.REPLY"
     }
 }

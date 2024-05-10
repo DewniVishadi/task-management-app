@@ -47,8 +47,8 @@ class TaskRepository(private val taskDao: TaskDao) {
     }
 
     @WorkerThread
-    suspend fun delete(task: Task) {
-        taskDao.delete(task)
+    suspend fun delete(taskName: String) {
+        taskDao.deleteTaskByName(taskName)
     }
 
     @WorkerThread

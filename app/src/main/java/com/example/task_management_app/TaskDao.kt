@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM task_table ORDER BY task ASC")
+    @Query("SELECT * FROM task_table ORDER BY priority DESC, deadline ASC ")
     fun getAlphabetizedTasks(): Flow<List<Task>>
 
     @Query("SELECT * FROM task_table WHERE task = :task")

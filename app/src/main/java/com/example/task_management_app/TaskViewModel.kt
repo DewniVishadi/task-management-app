@@ -17,9 +17,12 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
             repository.insert(applicationContext,TASK_NAME, DESCRIPTION, PRIORITY, DEADLINE)
         }
     }
+    fun delete(taskName: String) = viewModelScope.launch {
+        repository.delete(taskName)
+    }
 }
 
-class WordViewModelFactory(private val repository: TaskRepository) : ViewModelProvider.Factory {
+class TaskViewModelFactory(private val repository: TaskRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TaskViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
