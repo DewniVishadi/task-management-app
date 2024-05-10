@@ -9,6 +9,10 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     val allTasks: Flow<List<Task>> = taskDao.getAlphabetizedTasks()
 
+    fun getSearchedTasks(task: String): Flow<List<Task>> {
+        return taskDao.getSearchedTasks(task)
+    }
+
     @WorkerThread
     suspend fun getTaskByName(taskName: String): Task? {
         return taskDao.getTaskById(taskName)
@@ -43,12 +47,6 @@ class TaskRepository(private val taskDao: TaskDao) {
     suspend fun delete(taskName: String) {
         taskDao.deleteTaskByName(taskName)
     }
-
-    @WorkerThread
-    suspend fun deleteTaskByName(taskName: String) {
-        taskDao.deleteTaskByName(taskName)
-    }
-
     @WorkerThread
     suspend fun update(context: Context, taskName: String, description: String, priority: Int, deadline: String) {
         taskDao.update(taskName, description, priority, deadline)

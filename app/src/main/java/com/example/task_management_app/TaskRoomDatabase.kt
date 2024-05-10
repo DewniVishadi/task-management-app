@@ -47,36 +47,11 @@ abstract class TaskRoomDatabase : RoomDatabase() {
                     "task_database"
                 )
                     .fallbackToDestructiveMigration()
-                    .addCallback(TaskDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 // return instance
                 instance
             }
-        }
-
-        private class TaskDatabaseCallback(
-            private val scope: CoroutineScope
-        ) : Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                INSTANCE?.let { database ->
-                    scope.launch(Dispatchers.IO) {
-                        populateDatabase(database.taskDao())
-                    }
-                }
-            }
-        }
-
-        suspend fun populateDatabase(taskDao: TaskDao) {
-            // Delete all existing tasks if needed
-            // taskDao.deleteAll()
-
-            // Insert new tasks into the database
-            var task = Task("Hello", "Description for Hello task", 1, "2024-05-11")
-            taskDao.insert(task)
-            task = Task("World!", "Description for World task", 2, "2024-05-12")
-            taskDao.insert(task)
         }
     }
 }

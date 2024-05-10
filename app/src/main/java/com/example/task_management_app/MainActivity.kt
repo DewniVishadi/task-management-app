@@ -1,16 +1,23 @@
 package com.example.task_management_app
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.map
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.Calendar
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        val searchText = findViewById<EditText>(R.id.searchText)
         val adapter = TaskListAdapter(taskViewModel, applicationContext);
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -39,7 +47,35 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, NewTaskActivity::class.java)
             startActivityForResult(intent, newTaskActivityRequestCode)
         }
-        
+
+//        searchText.requestFocus()
+        val noResult = findViewById<TextView>(R.id.noResult)
+
+        searchText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // This method is called before the text is changed.
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                println("CharSequence $s")
+                val res = taskViewModel.getSearchedTasks(s.toString())
+                res.observe(owner = this@MainActivity) { tasks ->
+                    tasks.let { adapter.submitList(it) } }
+                if(res.value == null) {
+                    taskViewModel.allTasks.observe(owner = this@MainActivity) { tasks ->
+                        // Update the cached copy of the words in the adapter.
+                        tasks.let { adapter.submitList(it) }
+                    }
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // This method is called after the text has been changed.
+                val text = s.toString()
+                // Do something with the updated text
+            }
+        })
+
         // Add an observer on the LiveData returned by getAlphabetizedWords.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.

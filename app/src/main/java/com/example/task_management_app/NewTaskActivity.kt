@@ -69,6 +69,7 @@ class NewTaskActivity : AppCompatActivity() {
         else taskName.isEnabled = true
 
         var selectedDate: String = ""
+        var selectedDesc: String = ""
 
         deadline.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
              selectedDate = "$year-${monthOfYear + 1}-$dayOfMonth"
@@ -78,6 +79,10 @@ class NewTaskActivity : AppCompatActivity() {
             selectedDate = DEADLINE.toString()
         }
 
+        selectedDesc = description.text.toString().ifEmpty {
+            "Not provided"
+        }
+
 
         button.setOnClickListener {
             val replyIntent = Intent()
@@ -85,7 +90,7 @@ class NewTaskActivity : AppCompatActivity() {
                 setResult(Activity.RESULT_CANCELED, replyIntent)
             } else {
                 val taskName = taskName.text.toString()
-                val description = description.text.toString()
+                val description = selectedDesc
                 val priority = numberPicker.value
                 val deadline = selectedDate
                 replyIntent.putExtra("TASK_NAME", taskName)

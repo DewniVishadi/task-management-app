@@ -16,6 +16,9 @@ interface TaskDao {
     @Query("SELECT * FROM task_table WHERE task = :task")
     suspend fun getTaskById(task: String): Task?
 
+    @Query("SELECT * FROM task_table WHERE task LIKE '%' || :task || '%'")
+    fun getSearchedTasks(task: String): Flow<List<Task>>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(task: Task)
 

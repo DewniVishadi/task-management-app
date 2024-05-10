@@ -40,7 +40,6 @@ class TaskListAdapter(private val viewModel: TaskViewModel, private val context:
                 }
             }
             textView1.setOnClickListener {
-                println("TASK_NAME CCCCCCCCCCCCCCCCCCC $taskName")
                 val intent = Intent(context, NewTaskActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.putExtra("TASK_NAME", taskName)
