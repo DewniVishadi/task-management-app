@@ -3,16 +3,9 @@ package com.example.task_management_app
 import android.content.Context
 import android.widget.Toast
 import androidx.annotation.WorkerThread
-import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import java.util.Calendar
 
 class TaskRepository(private val taskDao: TaskDao) {
-
-    private val calendar: Calendar = Calendar.getInstance()
-    private val year = calendar.get(Calendar.YEAR)
-    private val month = calendar.get(Calendar.MONTH) + 1 // Month starts from 0
-    private val day = calendar.get(Calendar.DAY_OF_MONTH)
 
     val allTasks: Flow<List<Task>> = taskDao.getAlphabetizedTasks()
 
@@ -28,7 +21,7 @@ class TaskRepository(private val taskDao: TaskDao) {
                 TASK_NAME ?: "",
                 DESCRIPTION ?: "",
                 PRIORITY ?: 0,
-                DEADLINE ?: "$year-$month-$day"
+                DEADLINE ?: ""
             )
             val chk = TASK_NAME?.let { getTaskByName(it) }
             println("chk $chk")
@@ -57,8 +50,9 @@ class TaskRepository(private val taskDao: TaskDao) {
     }
 
     @WorkerThread
-    suspend fun update(task: Task) {
-        taskDao.update(task)
+    suspend fun update(context: Context, taskName: String, description: String, priority: Int, deadline: String) {
+        taskDao.update(taskName, description, priority, deadline)
+        Toast.makeText(context, "Task updated successfully!", Toast.LENGTH_SHORT).show()
     }
 }
 

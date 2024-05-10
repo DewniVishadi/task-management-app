@@ -19,18 +19,13 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(task: Task)
 
-    @Delete
-    suspend fun delete(task: Task)
-
     @Query("DELETE FROM task_table")
     suspend fun deleteAll()
 
-    // Additional operation to delete a specific task by its task name
     @Query("DELETE FROM task_table WHERE task = :taskName")
     suspend fun deleteTaskByName(taskName: String)
 
-    // Additional operation to update a task
-    @Update
-    suspend fun update(task: Task)
+    @Query("UPDATE task_table SET description = :description, priority = :priority, deadline = :deadline WHERE task = :taskName")
+    suspend fun update(taskName: String, description: String, priority: Int, deadline: String)
 }
 

@@ -1,6 +1,7 @@
 package com.example.task_management_app
 
 import android.content.Context
+import android.webkit.WebSettings.RenderPriority
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +20,10 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     }
     fun delete(taskName: String) = viewModelScope.launch {
         repository.delete(taskName)
+    }
+
+    fun update(applicationContext: Context, taskName: String, description: String, priority: Int, deadline: String) = viewModelScope.launch {
+        repository.update(applicationContext, taskName, description, priority, deadline)
     }
 }
 
