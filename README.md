@@ -1,4 +1,4 @@
-Sure! Here's a basic README.md file template for your project:
+
 
 ```markdown
 # Task Management App
